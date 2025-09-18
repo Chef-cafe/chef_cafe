@@ -405,6 +405,36 @@ function initHeroSlideshow(container) {
         }
     });
 
+    // Touch/swipe support for mobile
+    let startX = 0;
+    let startY = 0;
+    let endX = 0;
+    let endY = 0;
+    const minSwipeDistance = 50;
+
+    container.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+    }, { passive: true });
+
+    container.addEventListener('touchend', (e) => {
+        endX = e.changedTouches[0].clientX;
+        endY = e.changedTouches[0].clientY;
+        
+        const deltaX = endX - startX;
+        const deltaY = endY - startY;
+        
+        // Only trigger swipe if horizontal movement is greater than vertical
+        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
+            pauseAutoplay();
+            if (deltaX > 0) {
+                prev(); // Swipe right - previous
+            } else {
+                next(); // Swipe left - next
+            }
+        }
+    }, { passive: true });
+
     function show(i) {
         elements.forEach((e, idx) => {
             e.el.classList.toggle('active', idx === i);
