@@ -1,6 +1,6 @@
-# Chef Cafe Restaurant Website
+# Chef's cafe Restaurant Website
 
-A modern, responsive restaurant website for Chef Cafe featuring a beautiful homepage, comprehensive menu, and customer reviews section.
+A modern, responsive restaurant website for Chef's cafe featuring a beautiful homepage, comprehensive menu, and customer reviews section.
 
 ## Features
 
@@ -120,4 +120,4 @@ For any questions or support, please contact us at info@chefcafe.com
 
 ---
 
-**Chef Cafe** - Taste the Essence of Good Food and Great Times
+**Chef's cafe** - Taste the Essence of Good Food and Great Times

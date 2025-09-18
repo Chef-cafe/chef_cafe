@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chef Cafe - Taste the Essence of Good Food</title>
+    <title>Chef's cafe - Taste the Essence of Good Food</title>
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -13,7 +13,7 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
-                <img src="images/logo.jpg" alt="Chef Cafe Logo">
+                <img src="images/logo.jpg" alt="Chef's cafe Logo">
             </div>
             <ul class="nav-menu">
                 <li class="nav-item">
@@ -42,22 +42,28 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
-            <h1 class="hero-title">Welcome to Chef Cafe</h1>
-            <p class="hero-subtitle">Taste the Essence of Good Food and Great Times</p>
+            
             <div class="hero-buttons">
                 <a href="menu.html" class="btn btn-primary">View Menu</a>
                 <a href="#about" class="btn btn-secondary">About Us</a>
             </div>
         </div>
         <div class="hero-image">
+            <div class="hero-media" aria-hidden="true"></div>
             <div class="hero-overlay"></div>
+            <div class="hero-controls" aria-label="Slideshow controls">
+                <button class="hero-btn hero-prev" aria-label="Previous slide"><i class="fas fa-chevron-left"></i></button>
+                <div class="hero-dots" role="tablist" aria-label="Slide pagination"></div>
+                <button class="hero-btn hero-next" aria-label="Next slide"><i class="fas fa-chevron-right"></i></button>
+                <button class="hero-btn hero-toggle" aria-label="Pause slideshow" title="Pause"><i class="fas fa-pause"></i></button>
+            </div>
         </div>
     </section>
 
     <!-- Featured Categories -->
     <section class="featured-categories">
         <div class="container">
-            <h2 class="section-title">Savor the Best at Chef Cafe</h2>
+            <h2 class="section-title">Savor the Best at Chef's cafe</h2>
             <p class="section-subtitle">Explore Flavors That Delight Your Senses</p>
             
             <div class="categories-grid">
@@ -99,7 +105,7 @@
                 <div class="about-text">
                     <h2>About Us</h2>
                     <h3>Passion for Authentic Flavors, Dedication to Quality</h3>
-                    <p>Welcome to Chef Cafe, a culinary haven where flavors, ambiance, and hospitality come together to create unforgettable dining experiences. We are dedicated to serving you the finest dishes made with fresh ingredients and traditional cooking methods.</p>
+                    <p>Welcome to Chef's cafe, a culinary haven where flavors, ambiance, and hospitality come together to create unforgettable dining experiences. We are dedicated to serving you the finest dishes made with fresh ingredients and traditional cooking methods.</p>
                     <p>From our signature biriyanis to our fresh juices and refreshing mojitos, every dish is crafted with love and attention to detail. Join us for a dining experience that will delight your senses and leave you craving more.</p>
                     <div class="about-stats">
                         <div class="stat">
@@ -118,7 +124,7 @@
                 </div>
                 <div class="about-image">
                     <div class="image-placeholder">
-                        <i class="fas fa-utensils"></i>
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23ff6b35'/%3E%3Cstop offset='100%25' stop-color='%23f7931e'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='400' rx='20' fill='url(%23g)'/%3E%3Ccircle cx='120' cy='140' r='60' fill='rgba(255,255,255,0.25)'/%3E%3Ccircle cx='270' cy='240' r='90' fill='rgba(255,255,255,0.2)'/%3E%3Cpath d='M200 105c20 0 36 16 36 36s-16 36-36 36-36-16-36-36 16-36 36-36zm-70 150c10-35 44-60 70-60s60 25 70 60' fill='none' stroke='rgba(255,255,255,0.7)' stroke-width='10' stroke-linecap='round'/%3E%3C/svg%3E" alt="About Chef's cafe placeholder image" />
                     </div>
                 </div>
             </div>
@@ -134,18 +140,22 @@
                     <div class="contact-item">
                         <i class="fas fa-phone"></i>
                         <h3>Call Us</h3>
-                        <p>+91-7025352264</p>
-                        <p>+91-**********</p>
+                        <p><a href="tel:+917025352264" aria-label="Call +91 7025352264">+91-7025352264</a></p>
+                        <p><a href="tel:+917907493058" aria-label="Call +91 7907493058">+91-7907493058</a></p>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-map-marker-alt"></i>
                         <h3>Visit Us</h3>
-                        <p>Peroor, Ettumanoor<br>Kerala - 686637</p>
+                        <p>
+                            <a href="https://maps.app.goo.gl/kYYUkSKFbVq8iSe59" target="_blank" rel="noopener noreferrer" aria-label="Open address in Google Maps">
+                                Peroor, Ettumanoor<br>Kerala - 686637
+                            </a>
+                        </p>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-envelope"></i>
                         <h3>Email Us</h3>
-                        <p>info@chefcafe.com</p>
+                        <p><a href="mailto:info@chefcafe.com" aria-label="Send email to info@chefcafe.com">info@chefcafe.com</a></p>
                     </div>
                 </div>
                 <div class="map-container">
@@ -182,9 +192,9 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <div class="footer-logo">
-                        <img src="images/logo.jpg" alt="Chef Cafe Logo">
+                        <img src="images/logo.jpg" alt="Chef's cafe Logo">
                     </div>
-                    <p>Experience the finest flavors at Chef Cafe, where every dish tells a story of passion and quality.</p>
+                    <p>Experience the finest flavors at Chef's cafe, where every dish tells a story of passion and quality.</p>
                 </div>
                 <div class="footer-section">
                     <h3>Quick Links</h3>
@@ -205,7 +215,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 Chef Cafe. All rights reserved.</p>
+                <p>&copy; 2024 Chef's cafe. All rights reserved.</p>
             </div>
         </div>
     </footer>

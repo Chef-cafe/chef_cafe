@@ -46,6 +46,17 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+html {
+    overflow-x: hidden;
+}
+
+img,
+iframe {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -158,21 +169,98 @@ body {
 /* Hero Section */
 .hero {
     height: 100vh;
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect fill="%23f8f9fa" width="1200" height="800"/><circle fill="%23ff6b35" cx="200" cy="200" r="100" opacity="0.1"/><circle fill="%23ff6b35" cx="1000" cy="600" r="150" opacity="0.1"/></svg>');
-    background-size: cover;
-    background-position: center;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     color: white;
     position: relative;
+    overflow: hidden;
+    background: #111;
 }
 
 .hero-content {
     max-width: 800px;
     z-index: 2;
 }
+
+.hero-media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.hero-media img,
+.hero-media video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+
+.hero-media .active {
+    opacity: 1;
+}
+
+.hero-controls {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: end;
+    padding: 20px;
+    gap: 10px;
+    z-index: 3;
+    pointer-events: none;
+}
+
+.hero-btn {
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.4);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+    pointer-events: auto;
+}
+
+.hero-btn:hover { background: rgba(0,0,0,0.65); transform: translateY(-1px); }
+
+.hero-prev { justify-self: start; align-self: center; }
+.hero-next { justify-self: end; align-self: center; }
+
+.hero-toggle {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+}
+
+.hero-dots {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+    border: 1px solid rgba(255,255,255,0.7);
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.hero-dot.active { background: #ff6b35; transform: scale(1.2); }
 
 .hero-title {
     font-size: 4rem;
@@ -1116,19 +1204,20 @@ body {
 
     .nav-menu {
         position: fixed;
-        left: -100%;
         top: 70px;
+        left: 0;
+        transform: translateX(-100%);
         flex-direction: column;
         background-color: var(--navbar-bg);
         width: 100%;
         text-align: center;
-        transition: 0.3s;
+        transition: transform 0.3s ease;
         padding: 20px 0;
         backdrop-filter: blur(10px);
     }
 
     .nav-menu.active {
-        left: 0;
+        transform: translateX(0);
     }
     
     .nav-controls {

@@ -312,6 +312,12 @@ document.addEventListener('DOMContentLoaded', () => {
             section.style.display = 'block';
         });
     }
+
+    // Initialize hero media slideshow if present
+    const heroMediaContainer = document.querySelector('.hero-media');
+    if (heroMediaContainer) {
+        initHeroSlideshow(heroMediaContainer);
+    }
 });
 
 // Performance optimization: Lazy loading for images
@@ -332,3 +338,132 @@ if ('IntersectionObserver' in window) {
 }
 
 // Google reviews removed per request
+
+// Hero slideshow: 2 images (4s each) + 2 videos (advance on end)
+function initHeroSlideshow(container) {
+    // Update these paths to your actual media files if needed
+    const playlist = [
+        { type: 'image', src: 'images/hero/int.png', duration: 4000 },
+        { type: 'video', src: 'https://cdn.coverr.co/videos/coverr-frying-pan-on-a-stove-0144/1080p.mp4', duration: null },
+        { type: 'image', src: 'images/menu/Beef Biriyani.jpg', duration: 4000 },
+        { type: 'video', src: 'https://cdn.coverr.co/videos/coverr-preparing-food-in-the-kitchen-1783/1080p.mp4', duration: null }
+    ];
+
+    const elements = playlist.map(item => {
+        let el;
+        if (item.type === 'image') {
+            el = document.createElement('img');
+            el.src = item.src;
+            el.alt = '';
+            el.loading = 'lazy';
+        } else {
+            el = document.createElement('video');
+            el.src = item.src;
+            el.muted = true;
+            el.playsInline = true;
+            el.loop = false;
+            el.preload = 'auto';
+        }
+        container.appendChild(el);
+        return { item, el };
+    });
+
+    let index = 0;
+    let autoplay = true;
+    let timer = null;
+
+    // Build controls references and dots
+    const dotsContainer = document.querySelector('.hero-dots');
+    const prevBtn = document.querySelector('.hero-prev');
+    const nextBtn = document.querySelector('.hero-next');
+    const toggleBtn = document.querySelector('.hero-toggle');
+    let dots = [];
+    if (dotsContainer) {
+        dots = playlist.map((_, i) => {
+            const dot = document.createElement('button');
+            dot.className = 'hero-dot';
+            dot.setAttribute('role', 'tab');
+            dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+            dot.addEventListener('click', () => goTo(i));
+            dotsContainer.appendChild(dot);
+            return dot;
+        });
+    }
+
+    prevBtn && prevBtn.addEventListener('click', () => { pauseAutoplay(); prev(); });
+    nextBtn && nextBtn.addEventListener('click', () => { pauseAutoplay(); next(); });
+    toggleBtn && toggleBtn.addEventListener('click', () => {
+        autoplay = !autoplay;
+        if (autoplay) {
+            toggleBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            toggleBtn.setAttribute('aria-label', 'Pause slideshow');
+            scheduleNext(800);
+        } else {
+            toggleBtn.innerHTML = '<i class="fas fa-play"></i>';
+            toggleBtn.setAttribute('aria-label', 'Play slideshow');
+            if (timer) clearTimeout(timer);
+        }
+    });
+
+    function show(i) {
+        elements.forEach((e, idx) => {
+            e.el.classList.toggle('active', idx === i);
+            if (e.el.tagName === 'VIDEO') {
+                if (idx === i) {
+                    e.el.currentTime = 0;
+                    const playPromise = e.el.play();
+                    if (playPromise && typeof playPromise.catch === 'function') {
+                        playPromise.catch(() => {});
+                    }
+                } else {
+                    e.el.pause();
+                }
+            }
+        });
+
+        const current = elements[i];
+        // update dots
+        dots.forEach((d, di) => d.classList.toggle('active', di === i));
+
+        if (!autoplay) return;
+        if (current.item.type === 'image') {
+            scheduleNext(current.item.duration);
+        } else {
+            // advance on ended, with a safety timeout
+            current.el.onended = () => next();
+            scheduleNext(30000);
+        }
+    }
+
+    function scheduleNext(ms) {
+        if (timer) clearTimeout(timer);
+        if (ms) timer = setTimeout(() => autoplay && next(), ms);
+    }
+
+    function next() {
+        index = (index + 1) % elements.length;
+        show(index);
+    }
+
+    function prev() {
+        index = (index - 1 + elements.length) % elements.length;
+        show(index);
+    }
+
+    function goTo(i) {
+        index = i % elements.length;
+        show(index);
+    }
+
+    function pauseAutoplay() {
+        autoplay = false;
+        if (toggleBtn) {
+            toggleBtn.innerHTML = '<i class="fas fa-play"></i>';
+            toggleBtn.setAttribute('aria-label', 'Play slideshow');
+        }
+        if (timer) clearTimeout(timer);
+    }
+
+    // Start
+    show(index);
+}
