@@ -803,9 +803,30 @@ iframe {
 /* Menu Styles */
 .menu-header {
     padding: 120px 0 80px;
-    background: linear-gradient(135deg, var(--accent-color), #f7931e);
+    background: linear-gradient(135deg, var(--accent-color), #4a2602);
     color: white;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.menu-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../images/all in one.png');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.2;
+    z-index: 1;
+}
+
+.menu-header .container {
+    position: relative;
+    z-index: 2;
 }
 
 .menu-header h1 {
@@ -966,13 +987,30 @@ iframe {
         grid-template-columns: 1fr;
     }
     .menu-item {
-        grid-template-columns: 90px 1fr auto;
+        grid-template-columns: 80px 1fr auto;
+        grid-template-rows: auto;
         padding: 12px;
+        gap: 12px;
+        align-items: center;
     }
     .menu-thumb {
-        width: 80px;
-        height: 80px;
+        width: 70px;
+        height: 70px;
         border-radius: 10px;
+        grid-row: 1;
+    }
+    .menu-item-content {
+        grid-column: 2;
+        grid-row: 1;
+        align-self: center;
+    }
+    .menu-price {
+        grid-column: 3;
+        grid-row: 1;
+        font-size: 1.2rem;
+        text-align: right;
+        align-self: center;
+        padding-left: 8px;
     }
     .category-btn {
         padding: 8px 14px;
@@ -1563,5 +1601,21 @@ iframe {
 
     .reviews-header h1 {
         font-size: 2rem;
+    }
+    
+    /* Extra small mobile - ensure price visibility */
+    .menu-item {
+        grid-template-columns: 70px 1fr;
+        padding: 10px;
+    }
+    
+    .menu-thumb {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .menu-price {
+        font-size: 1.1rem;
+        line-height: 1.2;
     }
 }
