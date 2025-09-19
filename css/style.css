@@ -57,6 +57,104 @@ iframe {
     display: block;
 }
 
+/* Mobile-specific image optimizations */
+@media (max-width: 768px) {
+    .hero {
+        height: 100vh;
+        min-height: 100vh;
+        max-height: 100vh;
+        overflow: hidden;
+    }
+    
+    .hero-media {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        aspect-ratio: 9/16; /* Better for mobile portrait */
+        min-height: 100vh;
+        max-height: 100vh;
+    }
+    
+    .hero-media img,
+    .hero-media video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center center;
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+        backface-visibility: hidden;
+        transform: translateZ(0);
+        will-change: opacity;
+        border-radius: 0; /* Remove any border radius on mobile */
+    }
+    
+    .hero-content {
+        position: relative;
+        z-index: 10;
+        padding: 20px;
+        max-width: 90%;
+        margin: 0 auto;
+    }
+    
+    .hero-controls {
+        position: absolute;
+        bottom: 20px;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+        z-index: 10;
+    }
+    
+    .hero-dots {
+        position: absolute;
+        bottom: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 8px;
+        z-index: 10;
+    }
+    
+    .hero-toggle {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        z-index: 10;
+    }
+    
+    /* Ensure proper mobile viewport handling */
+    .hero-media {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+    }
+    
+    /* Improve touch targets for mobile */
+    .hero-btn {
+        min-width: 48px;
+        min-height: 48px;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+    }
+    
+    .hero-dot {
+        min-width: 12px;
+        min-height: 12px;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+    }
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -177,11 +275,14 @@ iframe {
     position: relative;
     overflow: hidden;
     background: #111;
+    -webkit-overflow-scrolling: touch;
+    overflow-scrolling: touch;
 }
 
 .hero-content {
     max-width: 800px;
     z-index: 2;
+    padding: 0 20px;
 }
 
 .hero-media {
@@ -197,6 +298,7 @@ iframe {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center center;
     opacity: 0;
     transition: opacity 0.8s ease;
 }
@@ -233,6 +335,8 @@ iframe {
     font-size: 1.2rem;
     backdrop-filter: blur(10px);
     box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 .hero-btn:hover { 
@@ -290,21 +394,69 @@ iframe {
 
 /* Mobile Responsive Controls */
 @media (max-width: 768px) {
-    .hero-controls {
+    .hero-btn {
+        width: 48px;
+        height: 48px;
+        font-size: 1.1rem;
+        border-width: 2px;
+        background: rgba(0,0,0,0.7);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+    
+    .hero-btn:hover {
+        background: rgba(255,107,53,0.9);
+        transform: scale(1.05);
+    }
+    
+    .hero-dot {
+        width: 12px;
+        height: 12px;
+        background: rgba(255,255,255,0.6);
+        border: 2px solid rgba(255,255,255,0.8);
+    }
+    
+    .hero-dot.active {
+        background: #ff6b35;
+        transform: scale(1.2);
+        box-shadow: 0 0 15px rgba(255,107,53,0.6);
+    }
+    
+    .hero-toggle {
+        width: 44px;
+        height: 44px;
+        font-size: 1rem;
+        background: rgba(0,0,0,0.8);
+        border: 2px solid rgba(255,255,255,0.9);
+    }
+}
+
+@media (max-width: 480px) {
+    .hero {
+        height: 100vh;
+        min-height: 100vh;
+        max-height: 100vh;
+    }
+    
+    .hero-content {
         padding: 15px;
-        gap: 8px;
+        max-width: 95%;
+    }
+    
+    .hero-controls {
+        padding: 0 15px;
+        bottom: 15px;
     }
     
     .hero-btn {
         width: 44px;
         height: 44px;
         font-size: 1rem;
-        border-width: 1px;
     }
     
     .hero-dots {
-        gap: 10px;
-        padding: 0 15px;
+        bottom: 70px;
+        gap: 6px;
     }
     
     .hero-dot {
@@ -318,45 +470,6 @@ iframe {
         width: 40px;
         height: 40px;
         font-size: 0.9rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .hero-controls {
-        padding: 10px;
-        gap: 6px;
-    }
-    
-    .hero-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 0.9rem;
-    }
-    
-    .hero-prev {
-        margin-left: 5px;
-    }
-    
-    .hero-next {
-        margin-right: 5px;
-    }
-    
-    .hero-dots {
-        gap: 8px;
-        padding: 0 10px;
-    }
-    
-    .hero-dot {
-        width: 8px;
-        height: 8px;
-    }
-    
-    .hero-toggle {
-        right: 10px;
-        bottom: 10px;
-        width: 36px;
-        height: 36px;
-        font-size: 0.8rem;
     }
 }
 
@@ -1322,12 +1435,32 @@ iframe {
         order: -1;
     }
 
+    .hero {
+        height: 100vh;
+        min-height: 350px;
+    }
+    
+    .hero-content {
+        padding: 0 10px;
+        max-width: 95%;
+    }
+    
+    .hero-media img,
+    .hero-media video {
+        object-fit: cover;
+        object-position: center center;
+        width: 100%;
+        height: 100%;
+    }
+
     .hero-title {
         font-size: 2rem;
+        line-height: 1.2;
     }
 
     .hero-subtitle {
         font-size: 1.1rem;
+        line-height: 1.4;
     }
 
     .hero-buttons {

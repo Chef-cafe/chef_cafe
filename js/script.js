@@ -341,12 +341,19 @@ if ('IntersectionObserver' in window) {
 
 // Hero slideshow: 2 images (4s each) + 2 videos (advance on end)
 function initHeroSlideshow(container) {
+    // Detect mobile device for optimized media
+    const isMobile = window.innerWidth <= 768;
+    
     // Update these paths to your actual media files if needed
     const playlist = [
         { type: 'image', src: 'images/hero/int.png', duration: 4000 },
-        { type: 'video', src: 'https://cdn.coverr.co/videos/coverr-frying-pan-on-a-stove-0144/1080p.mp4', duration: null },
+        { type: 'video', src: isMobile ? 
+            'https://cdn.coverr.co/videos/coverr-frying-pan-on-a-stove-0144/720p.mp4' : 
+            'https://cdn.coverr.co/videos/coverr-frying-pan-on-a-stove-0144/1080p.mp4', duration: null },
         { type: 'image', src: 'images/menu/Beef Biriyani.jpg', duration: 4000 },
-        { type: 'video', src: 'https://cdn.coverr.co/videos/coverr-preparing-food-in-the-kitchen-1783/1080p.mp4', duration: null }
+        { type: 'video', src: isMobile ? 
+            'https://cdn.coverr.co/videos/coverr-preparing-food-in-the-kitchen-1783/720p.mp4' : 
+            'https://cdn.coverr.co/videos/coverr-preparing-food-in-the-kitchen-1783/1080p.mp4', duration: null }
     ];
 
     const elements = playlist.map(item => {
@@ -362,7 +369,9 @@ function initHeroSlideshow(container) {
             el.muted = true;
             el.playsInline = true;
             el.loop = false;
-            el.preload = 'auto';
+            el.preload = isMobile ? 'metadata' : 'auto'; // Lighter preload on mobile
+            el.controls = false;
+            el.autoplay = false;
         }
         container.appendChild(el);
         return { item, el };
@@ -405,27 +414,49 @@ function initHeroSlideshow(container) {
         }
     });
 
-    // Touch/swipe support for mobile
+    // Enhanced touch/swipe support for mobile
     let startX = 0;
     let startY = 0;
     let endX = 0;
     let endY = 0;
-    const minSwipeDistance = 50;
+    const minSwipeDistance = 50; // Increased for better mobile responsiveness
+    const maxSwipeTime = 300; // Maximum time for a swipe gesture
+    let touchStartTime = 0;
+    let isSwipeGesture = false;
 
     container.addEventListener('touchstart', (e) => {
         startX = e.touches[0].clientX;
         startY = e.touches[0].clientY;
+        touchStartTime = Date.now();
+        isSwipeGesture = false;
     }, { passive: true });
 
+    container.addEventListener('touchmove', (e) => {
+        const deltaX = Math.abs(e.touches[0].clientX - startX);
+        const deltaY = Math.abs(e.touches[0].clientY - startY);
+        
+        // Determine if this is a horizontal swipe gesture
+        if (deltaX > deltaY && deltaX > 10) {
+            isSwipeGesture = true;
+            e.preventDefault(); // Prevent scrolling during horizontal swipes
+        }
+    }, { passive: false });
+
     container.addEventListener('touchend', (e) => {
+        if (!isSwipeGesture) return;
+        
         endX = e.changedTouches[0].clientX;
         endY = e.changedTouches[0].clientY;
         
         const deltaX = endX - startX;
         const deltaY = endY - startY;
+        const touchDuration = Date.now() - touchStartTime;
         
-        // Only trigger swipe if horizontal movement is greater than vertical
-        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
+        // Only trigger swipe if horizontal movement is significant
+        // and swipe is quick enough
+        if (Math.abs(deltaX) > Math.abs(deltaY) && 
+            Math.abs(deltaX) > minSwipeDistance && 
+            touchDuration < maxSwipeTime) {
             pauseAutoplay();
             if (deltaX > 0) {
                 prev(); // Swipe right - previous
@@ -492,6 +523,66 @@ function initHeroSlideshow(container) {
             toggleBtn.setAttribute('aria-label', 'Play slideshow');
         }
         if (timer) clearTimeout(timer);
+    }
+
+    // Handle window resize for mobile orientation changes
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            // Recalculate mobile detection on resize
+            const newIsMobile = window.innerWidth <= 768;
+            if (newIsMobile !== isMobile) {
+                // Reload slideshow with appropriate media quality
+                location.reload();
+            }
+        }, 250);
+    });
+
+    // Mobile-specific performance optimizations
+    if (isMobile) {
+        // Reduce animation duration on mobile and improve touch handling
+        const style = document.createElement('style');
+        style.textContent = `
+            .hero-media img,
+            .hero-media video {
+                transition: opacity 0.4s ease !important;
+                -webkit-transform: translateZ(0);
+                transform: translateZ(0);
+                -webkit-backface-visibility: hidden;
+                backface-visibility: hidden;
+            }
+            
+            .hero {
+                -webkit-overflow-scrolling: touch;
+                overflow-scrolling: touch;
+            }
+            
+            .hero-controls {
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -khtml-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+            
+            .hero-btn {
+                -webkit-tap-highlight-color: transparent;
+                touch-action: manipulation;
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Optimize video loading for mobile
+        elements.forEach(({ item, el }) => {
+            if (item.type === 'video') {
+                el.preload = 'none'; // Don't preload videos on mobile
+                el.muted = true;
+                el.playsInline = true;
+                el.setAttribute('webkit-playsinline', 'true');
+            }
+        });
     }
 
     // Start
