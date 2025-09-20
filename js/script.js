@@ -346,14 +346,30 @@ function initHeroSlideshow(container) {
     
     // Update these paths to your actual media files if needed
     const playlist = [
-        { type: 'image', src: 'images/hero/int.png', duration: 4000 },
-        { type: 'video', src: isMobile ? 
-            'https://cdn.coverr.co/videos/coverr-frying-pan-on-a-stove-0144/720p.mp4' : 
-            'https://cdn.coverr.co/videos/coverr-frying-pan-on-a-stove-0144/1080p.mp4', duration: null },
-        { type: 'image', src: 'images/menu/Beef Biriyani.jpg', duration: 4000 },
-        { type: 'video', src: isMobile ? 
-            'https://cdn.coverr.co/videos/coverr-preparing-food-in-the-kitchen-1783/720p.mp4' : 
-            'https://cdn.coverr.co/videos/coverr-preparing-food-in-the-kitchen-1783/1080p.mp4', duration: null }
+        { 
+            type: 'image', 
+            src: isMobile ? 'images/hero/int.jpg' : 'images/hero/int.jpg', 
+            duration: 4000 
+        },
+        { 
+            type: 'video', 
+            src: isMobile ? 
+                'https://cdn.coverr.co/videos/coverr-frying-pan-on-a-stove-0144/720p.mp4' : 
+                'https://cdn.coverr.co/videos/coverr-frying-pan-on-a-stove-0144/1080p.mp4', 
+            duration: null 
+        },
+        { 
+            type: 'image', 
+            src: isMobile ? 'images/hero/outin.jpg' : 'images/hero/outin.jpg', 
+            duration: 4000 
+        },
+        { 
+            type: 'video', 
+            src: isMobile ? 
+                'https://cdn.coverr.co/videos/coverr-preparing-food-in-the-kitchen-1783/720p.mp4' : 
+                'https://cdn.coverr.co/videos/coverr-preparing-food-in-the-kitchen-1783/1080p.mp4', 
+            duration: null 
+        }
     ];
 
     const elements = playlist.map(item => {
